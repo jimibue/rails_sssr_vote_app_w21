@@ -17,7 +17,7 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if (@item.save)
-      # this will status 204: 2xx - successfull
+      # this will status 200: 2xx - successfull
       render json: @item
     else
       #4XX - client error 422 unprocesable entity (bad data)
@@ -27,7 +27,7 @@ class ItemsController < ApplicationController
 
   def update
     if (@item.update(item_params))
-      # this will status 204: 2xx - successfull
+      # this will status 200: 2xx - successfull
       render json: @item
     else
       #4XX - client error 422 unprocesable entity (bad data)
@@ -46,6 +46,6 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    Item.require(:item).permit(:name, :category, :likes, :description)
+    params.require(:item).permit(:name, :category, :likes, :description)
   end
 end
