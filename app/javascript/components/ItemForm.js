@@ -48,7 +48,6 @@ const ItemForm = (props) => {
         console.log(err.response);
         console.log(err.response.data.errors[0]);
       }
-      }
     }
   };
   return (
