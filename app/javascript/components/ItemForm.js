@@ -2,21 +2,54 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const ItemForm = (props) => {
-  const [name, setName] = useState("");
-  const [likes, setLikes] = useState("");
-  const { id, addItem } = props;
+  const {
+    id,
+    addItem,
+    likes: initialLikes,
+    name: initialName,
+    updateItem,
+  } = props;
+  const [name, setName] = useState(initialName ? initialName : "");
+  const [likes, setLikes] = useState(initialLikes ? initialLikes : "");
+  // const initialLikes = props.likes;
+  // const initialName = props.name;
 
   const handleSubmit = async (e) => {
     // this prevents a reload
     e.preventDefault();
     console.log({ name: name, likes: likes });
     const item = { name: name, likes: likes };
-    // axios call here
-    // save to database DONE
-    let response = await axios.post("/items", item);
-    console.log(response.data);
-    // need update  (add response.data to items)
-    addItem(response.data);
+
+    if (id) {
+      // update logic here
+      try {
+        let response = await axios.put(`/items/${id}`, item);
+        console.log(response.data);
+        // need update UI (update response.data in items)
+        updateItem(response.data);
+      } catch (err) {
+        alert("err occured");
+        console.log(err);
+        console.log(err.response);
+        console.log(err.response.data.errors);
+      }
+    } else {
+      // creaete logic here
+      // axios call here
+      // save to database DONE
+      try {
+        let response = await axios.post("/items", item);
+        console.log(response.data);
+        // need update  (add response.data to items)
+        addItem(response.data);
+      } catch (err) {
+        alert("err occured");
+        console.log(err);
+        console.log(err.response);
+        console.log(err.response.data.errors[0]);
+      }
+      }
+    }
   };
   return (
     <div style={styles.container}>

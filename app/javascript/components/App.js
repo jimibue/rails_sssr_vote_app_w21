@@ -26,6 +26,19 @@ const App = () => {
     setItems([item, ...items]);
   };
 
+  const deleteItem = async (id) => {
+    // removes from DB
+    let response = await axios.delete(`/items/${id}`);
+    // remove from UI
+    let filteredItems = items.filter((i) => i.id !== id);
+    setItems(filteredItems);
+  };
+
+  const updateItem = (item) => {
+    let updatedItems = items.map((i) => (i.id === item.id ? item : i));
+    setItems(updatedItems);
+  };
+
   return (
     <div style={styles.container}>
       <h1 style={styles.header}>App component (SPA HERE)</h1>
@@ -33,7 +46,7 @@ const App = () => {
         {showNewForm ? "cancel" : "new item"}
       </button>
       {showNewForm && <ItemForm addItem={addItem} />}
-      <Items items={items} />
+      <Items items={items} updateItem={updateItem} deleteItem={deleteItem} />
     </div>
   );
 };
