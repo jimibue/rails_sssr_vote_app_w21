@@ -22,13 +22,17 @@ const App = () => {
     setShowNewForm(!showNewForm);
   };
 
+  const addItem = (item) => {
+    setItems([item, ...items]);
+  };
+
   return (
     <div style={styles.container}>
       <h1 style={styles.header}>App component (SPA HERE)</h1>
       <button onClick={toggleNewForm}>
         {showNewForm ? "cancel" : "new item"}
       </button>
-      {showNewForm && <ItemForm />}
+      {showNewForm && <ItemForm addItem={addItem} />}
       <Items items={items} />
     </div>
   );
