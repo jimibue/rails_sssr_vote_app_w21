@@ -1,9 +1,35 @@
-import React from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import ItemForm from "./ItemForm";
+import Items from "./Items";
 
 const App = () => {
+  const [showNewForm, setShowNewForm] = useState(false);
+  const [items, setItems] = useState([]);
+
+  // run callback on mount
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  const getItems = async () => {
+    let response = await axios.get("/items");
+    // console.log(response.data);
+    setItems(response.data);
+  };
+  // my items state is going to live in my APP
+  const toggleNewForm = () => {
+    setShowNewForm(!showNewForm);
+  };
+
   return (
     <div style={styles.container}>
       <h1 style={styles.header}>App component (SPA HERE)</h1>
+      <button onClick={toggleNewForm}>
+        {showNewForm ? "cancel" : "new item"}
+      </button>
+      {showNewForm && <ItemForm />}
+      <Items items={items} />
     </div>
   );
 };
